@@ -1,0 +1,26 @@
+.landing-page-1 {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 30px;
+}
+
+.landing-page-2 {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 18px;
+}
+.image {
+  height: 150px;
+}
+.div-image {
+  display: flex;
+  justify-content: center;
+}
+
+.main-div {
+  flex-direction: column;
+  align-items: center;
+  top: 30%;
+  left: 35%;
+  position: absolute;
+}

@@ -1,0 +1,16 @@
+#app-bar {
+  background-color: #806666;
+  display: flex;
+}
+#title {
+  text-align: center;
+  margin: 0;
+}
+.page {
+  text-decoration: none;
+  color: black;
+}
+#box2 {
+  display: flex;
+  justify-content: flex-end;
+}
