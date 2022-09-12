@@ -204,7 +204,6 @@ export default function ModalAddBook({
               <Stack spacing={1}>
                 <Rating
                   name="simple-controlled"
-                  value={rating}
                   style={{ width: '30px' }}
                   onChange={(event, newValue) => {
                     setRating(newValue);
@@ -245,7 +244,6 @@ export default function ModalAddBook({
 
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                               <input
-                                value={date}
                                 ref={inputRef}
                                 placeholder="mm-dd-yyy"
                                 disabled

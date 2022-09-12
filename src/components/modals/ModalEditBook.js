@@ -116,6 +116,7 @@ export default function ModalEditBook({
     setDate(dataFormatada);
     setDateEmpty(false);
   }
+
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit} style={{}} fullWidth>
       <DialogTitle>Editar Livro</DialogTitle>
@@ -134,6 +135,7 @@ export default function ModalEditBook({
             aria-labelledby="demo-radio-buttons-group-label"
             name="radio-buttons-group"
             onChange={(e) => onChangeStatus(e)}
+            defaultValue={rowSelected !== undefined ? rowSelected.status : ''}
           >
             <FormControlLabel
               value={'quero ler'}
@@ -157,7 +159,6 @@ export default function ModalEditBook({
               <Stack spacing={1}>
                 <Rating
                   name="simple-controlled"
-                  value={rating}
                   style={{ width: '30px' }}
                   onChange={(event, newValue) => {
                     setRating(newValue);
