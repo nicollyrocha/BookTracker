@@ -12,16 +12,13 @@ import {
   RadioGroup,
   Rating,
   Stack,
-  TextField,
+  Typography,
 } from '@mui/material';
 import api from '../../services/api';
-import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { Box, style } from '@mui/system';
+import { Box } from '@mui/system';
 
 export default function ModalEditBook({
   openEdit,
@@ -64,22 +61,29 @@ export default function ModalEditBook({
           status: status,
         };
       }
-      try {
-        await api.put(`/book/${localStorage.getItem('user')}`, dados);
+      if (dateEmpty === false) {
         try {
-          const books = await api.get(`/books/${localStorage.getItem('user')}`);
-          rows = books.data;
-          window.location.reload();
+          await api.put(`/book/${localStorage.getItem('user')}`, dados);
+          try {
+            const books = await api.get(
+              `/books/${localStorage.getItem('user')}`
+            );
+            rows = books.data;
+            window.location.reload();
+          } catch (e) {
+            console.log(e);
+          }
+
+          handleCloseEdit();
+          setStatus('');
+          setRating('');
+          dados = {};
+          setDateEmpty(false);
         } catch (e) {
           console.log(e);
         }
-
-        handleCloseEdit();
-        setStatus('');
-        setRating('');
-        dados = {};
-      } catch (e) {
-        console.log(e);
+      } else {
+        setDateEmpty(true);
       }
     } else {
       setIsError(true);
@@ -110,6 +114,7 @@ export default function ModalEditBook({
 
     const dataFormatada = `${mes}-${dia}-${ano}`;
     setDate(dataFormatada);
+    setDateEmpty(false);
   }
 
   return (
@@ -146,63 +151,84 @@ export default function ModalEditBook({
         </div>
         {status === 'lido' ? (
           <>
-            <div style={{ marginBottom: '5px', marginTop: '10px' }}>
-              Avalie o livro:
-            </div>
-            <Stack spacing={1}>
-              <Rating
-                name="simple-controlled"
-                //value={rating}
-                style={{ width: '30px' }}
-                onChange={(event, newValue) => {
-                  setRating(newValue);
-                }}
-              />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack
-                  spacing={3}
-                  style={{
-                    display: 'flex',
-                    width: '40%',
-                    marginTop: '30px',
+            <div>
+              <div style={{ marginTop: '10px', marginBottom: '5px' }}>
+                Avalie o livro:
+              </div>
+              <Stack spacing={1}>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  style={{ width: '30px' }}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
                   }}
-                >
-                  <DatePicker
-                    label="Custom input"
-                    value={date}
-                    onChange={(newValue) => {
-                      onChangeDate(newValue);
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Stack
+                    spacing={3}
+                    style={{
+                      display: 'flex',
+                      width: '40%',
                     }}
-                    maxDate={new Date()}
-                    renderInput={({ inputRef, inputProps, InputProps }) => (
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <input
-                          value={date}
-                          ref={inputRef}
-                          placeholder="mm-dd-yyy"
-                        />
-                        {InputProps?.endAdornment}
-                      </Box>
-                    )}
-                  />
-                </Stack>
-              </LocalizationProvider>
-              {dateEmpty ? (
-                <div
-                  style={{
-                    fontSize: '10px',
-                    backgroundColor: '#CA2419',
-                    borderRadius: '4px',
-                    display: 'flex',
-                    alignSelf: 'flex-start',
-                    padding: '5px',
-                    color: 'white',
-                  }}
-                >
-                  PREENCHA A DATA FIM
-                </div>
-              ) : null}
-            </Stack>
+                  >
+                    <DatePicker
+                      label="Custom input"
+                      value={date}
+                      onChange={(newValue) => {
+                        onChangeDate(newValue);
+                      }}
+                      maxDate={new Date()}
+                      renderInput={({ inputRef, inputProps, InputProps }) => (
+                        <>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                            }}
+                          >
+                            <Typography
+                              variant="span"
+                              component="span"
+                              style={{
+                                marginBottom: '5px',
+                              }}
+                            >
+                              Data Finalização
+                            </Typography>
+
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <input
+                                value={date}
+                                ref={inputRef}
+                                placeholder="mm-dd-yyy"
+                                disabled
+                              />
+                              {InputProps?.endAdornment}
+                            </Box>
+                          </div>
+                        </>
+                      )}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+                {dateEmpty ? (
+                  <div
+                    style={{
+                      fontSize: '10px',
+                      backgroundColor: '#CA2419',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      alignSelf: 'flex-start',
+                      padding: '5px',
+                      color: 'white',
+                    }}
+                  >
+                    PREENCHA A DATA FIM
+                  </div>
+                ) : null}
+              </Stack>
+            </div>
           </>
         ) : null}
         {isError ? <Alert severity="error">{errorMsg}</Alert> : null}

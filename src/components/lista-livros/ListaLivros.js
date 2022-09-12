@@ -21,6 +21,12 @@ export default function ListaLivros() {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [rowSelected, setRowSelected] = React.useState({});
+  const [title, setTitle] = React.useState('');
+  const [author, setAuthor] = React.useState('');
+  const [status, setStatus] = React.useState(0);
+  const [rating, setRating] = React.useState();
+  const [date, setDate] = React.useState();
+  let dataSave;
 
   useEffect(() => {
     buscaLivrosPorUser();
@@ -40,6 +46,11 @@ export default function ListaLivros() {
   };
 
   const handleClose = () => {
+    dataSave = {};
+    setTitle('');
+    setAuthor('');
+    setRating();
+    setStatus(0);
     setOpen(false);
   };
 
@@ -65,7 +76,21 @@ export default function ListaLivros() {
     <>
       {localStorage.getItem('auth') ? (
         <>
-          <ModalAddBook open={open} handleClose={handleClose} />
+          <ModalAddBook
+            open={open}
+            handleClose={handleClose}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            status={status}
+            setStatus={setStatus}
+            rating={rating}
+            setRating={setRating}
+            dataSave={dataSave}
+            date={date}
+            setDate={setDate}
+          />
           <ModalEditBook
             openEdit={openEdit}
             handleCloseEdit={handleCloseEdit}
