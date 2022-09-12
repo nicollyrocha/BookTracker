@@ -2,5 +2,5 @@ import react from 'react';
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://localhost:8000/',
+  baseURL: 'https://book-tracker-nicolly.herokuapp.com/',
 });
