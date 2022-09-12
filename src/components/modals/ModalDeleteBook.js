@@ -39,7 +39,7 @@ export default function ModalDeleteBook({
 
   return (
     <Dialog open={openDelete} onClose={handleCloseDelete} style={{}} fullWidth>
-      <DialogTitle>Delete book</DialogTitle>
+      <DialogTitle>Deletar Livro</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Certeza que deseja excluir o livro da lista?

@@ -116,10 +116,9 @@ export default function ModalEditBook({
     setDate(dataFormatada);
     setDateEmpty(false);
   }
-
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit} style={{}} fullWidth>
-      <DialogTitle>Edit book</DialogTitle>
+      <DialogTitle>Editar Livro</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Preencha os campos abaixo para editar
@@ -163,6 +162,7 @@ export default function ModalEditBook({
                   onChange={(event, newValue) => {
                     setRating(newValue);
                   }}
+                  defaultValue={`${rowSelected.rating}`}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Stack
@@ -199,9 +199,11 @@ export default function ModalEditBook({
 
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                               <input
-                                value={date}
                                 ref={inputRef}
-                                placeholder="mm-dd-yyy"
+                                placeholder={`${rowSelected.date_finished.substring(
+                                  0,
+                                  10
+                                )}`}
                                 disabled
                               />
                               {InputProps?.endAdornment}

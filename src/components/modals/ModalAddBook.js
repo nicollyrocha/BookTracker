@@ -142,7 +142,7 @@ export default function ModalAddBook({
 
   return (
     <Dialog open={open} onClose={handleClose} style={{}} fullWidth>
-      <DialogTitle>Add a book</DialogTitle>
+      <DialogTitle>Adicione um Livro</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Preencha os campos abaixo para adicionar um livro

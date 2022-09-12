@@ -20,7 +20,7 @@ export default function ListaLivros() {
   const [open, setOpen] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
-  const [rowSelected, setRowSelected] = React.useState({});
+  const [rowSelected, setRowSelected] = React.useState();
   const [title, setTitle] = React.useState('');
   const [author, setAuthor] = React.useState('');
   const [status, setStatus] = React.useState(0);
@@ -126,25 +126,25 @@ export default function ListaLivros() {
               <TableHead>
                 <TableRow>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
-                    Title
+                    Título
                   </TableCell>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
-                    Author
+                    Autor
                   </TableCell>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
                     Status
                   </TableCell>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
-                    Rating
+                    Nota
                   </TableCell>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
-                    Created
+                    Criado Em
                   </TableCell>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
-                    Finished
+                    Terminado Em
                   </TableCell>
                   <TableCell align="center" style={{ fontWeight: '600' }}>
-                    Options
+                    Opções
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -152,7 +152,9 @@ export default function ListaLivros() {
                 {rows.map((row) => (
                   <TableRow
                     key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    sx={{
+                      '&:last-child td, &:last-child th': { border: 0 },
+                    }}
                   >
                     <TableCell align="center">{row.title}</TableCell>
                     <TableCell align="center">{row.author}</TableCell>
