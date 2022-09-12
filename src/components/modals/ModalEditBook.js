@@ -12,8 +12,16 @@ import {
   RadioGroup,
   Rating,
   Stack,
+  TextField,
 } from '@mui/material';
 import api from '../../services/api';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { Box, style } from '@mui/system';
 
 export default function ModalEditBook({
   openEdit,
@@ -25,6 +33,8 @@ export default function ModalEditBook({
   const [rating, setRating] = React.useState();
   const [isError, setIsError] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState(false);
+  const [date, setDate] = React.useState();
+  const [dateEmpty, setDateEmpty] = React.useState(false);
   let dados;
 
   function onChangeStatus(e) {
@@ -35,12 +45,18 @@ export default function ModalEditBook({
     if (status !== 0) {
       setIsError(false);
       if (status === 'lido') {
-        dados = {
-          userName: localStorage.getItem('user'),
-          book_id: rowSelected.book_id,
-          status: status,
-          rating: rating,
-        };
+        if (date === undefined) {
+          setDateEmpty(true);
+        } else {
+          dados = {
+            userName: localStorage.getItem('user'),
+            book_id: rowSelected.book_id,
+            status: status,
+            rating: rating,
+            date: date,
+          };
+          setDateEmpty(false);
+        }
       } else {
         dados = {
           userName: localStorage.getItem('user'),
@@ -76,6 +92,24 @@ export default function ModalEditBook({
     setStatus('');
     setRating('');
     dados = {};
+  }
+
+  function onChangeDate(newValue) {
+    const dataCompleta = new Date(newValue);
+    const ano = dataCompleta.getFullYear();
+    let dia = dataCompleta.getDate();
+    let mes = dataCompleta.getMonth() + 1;
+
+    if (dia < 10) {
+      dia = `0${dia}`;
+    }
+
+    if (mes < 10) {
+      mes = `0${mes}`;
+    }
+
+    const dataFormatada = `${mes}-${dia}-${ano}`;
+    setDate(dataFormatada);
   }
 
   return (
@@ -118,11 +152,56 @@ export default function ModalEditBook({
             <Stack spacing={1}>
               <Rating
                 name="simple-controlled"
-                value={rating}
+                //value={rating}
+                style={{ width: '30px' }}
                 onChange={(event, newValue) => {
                   setRating(newValue);
                 }}
               />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Stack
+                  spacing={3}
+                  style={{
+                    display: 'flex',
+                    width: '40%',
+                    marginTop: '30px',
+                  }}
+                >
+                  <DatePicker
+                    label="Custom input"
+                    value={date}
+                    onChange={(newValue) => {
+                      onChangeDate(newValue);
+                    }}
+                    maxDate={new Date()}
+                    renderInput={({ inputRef, inputProps, InputProps }) => (
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <input
+                          value={date}
+                          ref={inputRef}
+                          placeholder="mm-dd-yyy"
+                        />
+                        {InputProps?.endAdornment}
+                      </Box>
+                    )}
+                  />
+                </Stack>
+              </LocalizationProvider>
+              {dateEmpty ? (
+                <div
+                  style={{
+                    fontSize: '10px',
+                    backgroundColor: '#CA2419',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignSelf: 'flex-start',
+                    padding: '5px',
+                    color: 'white',
+                  }}
+                >
+                  PREENCHA A DATA FIM
+                </div>
+              ) : null}
             </Stack>
           </>
         ) : null}
